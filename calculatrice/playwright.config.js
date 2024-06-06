@@ -2,7 +2,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './src/E2E',
+  testDir: './src/tests/E2E',
   timeout: 60000,
   use: {
     browserName: 'chromium',
