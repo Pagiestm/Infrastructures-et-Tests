@@ -27,7 +27,9 @@ function App() {
   const handleClick = (value) => {
     if (value === '=') {
       try {
-        const calculatedResult = eval(display);
+        let sanitizedDisplay = display.replace(/--/g, '+');
+        sanitizedDisplay = sanitizedDisplay.replace(/[-+*\/]$/, ''); 
+        const calculatedResult = eval(sanitizedDisplay);
         setResult(calculatedResult.toString());
         setDisplay(calculatedResult.toString());
       } catch (error) {
@@ -38,9 +40,14 @@ function App() {
       setResult('');
       setDisplay('');
     } else {
-      setDisplay((prevDisplay) => prevDisplay + value);
+      // Handle subtraction operation correctly
+      if (value === '-' && display.endsWith('-')) {
+        setDisplay((prevDisplay) => prevDisplay.slice(0, -1) + '+');
+      } else {
+        setDisplay((prevDisplay) => prevDisplay + value);
+      }
     }
-  };
+  };  
 
   return (
     <div className="app">
