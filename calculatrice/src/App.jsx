@@ -10,13 +10,13 @@ const buttons = [
 
 const Button = ({ label, onClick }) => {
   return (
-    <button onClick={onClick}>{label}</button>
+    <button className="calculator__button" onClick={onClick}>{label}</button>
   );
 };
 
 const Display = ({ value }) => {
   return (
-    <input type="text" value={value} readOnly />
+    <input className="calculator__display" type="text" value={value} readOnly />
   );
 };
 
@@ -44,10 +44,10 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Calculator</h1>
+      <h1>Ma Calculatrice !</h1>
       <div className="calculator">
         <Display value={result || display} />
-        <div className="buttons">
+        <div className="calculator__buttons">
           {buttons.map((button, index) => (
             <Button key={index} label={button} onClick={() => handleClick(button)} />
           ))}
