@@ -20,34 +20,41 @@ const Display = ({ value }) => {
   );
 };
 
+export const calculate = (expression) => {
+  let sanitizedExpression = expression.replace(/--/g, '+');
+  sanitizedExpression = sanitizedExpression.replace(/[-+*\/]$/, '');
+  try {
+    let result = eval(sanitizedExpression);
+    if (result === Infinity || result === -Infinity) {
+      return 'Error';
+    }
+    return result.toString();
+  } catch (error) {
+    return 'Error';
+  }
+};
+
 function App() {
   const [display, setDisplay] = useState('');
   const [result, setResult] = useState('');
 
   const handleClick = (value) => {
-    if (value === '=') {
-      try {
-        let sanitizedDisplay = display.replace(/--/g, '+');
-        sanitizedDisplay = sanitizedDisplay.replace(/[-+*\/]$/, ''); 
-        const calculatedResult = eval(sanitizedDisplay);
-        setResult(calculatedResult.toString());
-        setDisplay(calculatedResult.toString());
-      } catch (error) {
-        setResult('Error');
+      if (value === '=') {
+        const result = calculate(display);
+        setResult(result);
+        setDisplay(result);
+      } else if (value === 'C') {
+        setResult('');
         setDisplay('');
-      }
-    } else if (value === 'C') {
-      setResult('');
-      setDisplay('');
-    } else {
-      // Handle subtraction operation correctly
-      if (value === '-' && display.endsWith('-')) {
-        setDisplay((prevDisplay) => prevDisplay.slice(0, -1) + '+');
       } else {
-        setDisplay((prevDisplay) => prevDisplay + value);
+        // Handle subtraction operation correctly
+        if (value === '-' && display.endsWith('-')) {
+          setDisplay((prevDisplay) => prevDisplay.slice(0, -1) + '+');
+        } else {
+          setDisplay((prevDisplay) => prevDisplay + value);
+        }
       }
-    }
-  };  
+    };
 
   return (
     <div className="app">
