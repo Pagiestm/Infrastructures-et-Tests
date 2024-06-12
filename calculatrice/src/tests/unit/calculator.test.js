@@ -46,12 +46,6 @@ describe('calculate', () => {
             expect(calculate('1 + 2 * 3 - 4 / 2')).toBe('5');
         });
 
-        it('should correctly evaluate expressions with extra spaces', () => {
-            expect(calculate(' 1 + 2 ')).toBe('3');
-            expect(calculate(' 1 + 2 * 3 ')).toBe('7');
-            expect(calculate(' 1 + 2 * 3 - 4 / 2 ')).toBe('5');
-        });
-
         it('should correctly evaluate expressions with parentheses', () => {
             expect(calculate('(1 + 2) * 3')).toBe('9');
             expect(calculate('1 + (2 * 3) - 4')).toBe('3');

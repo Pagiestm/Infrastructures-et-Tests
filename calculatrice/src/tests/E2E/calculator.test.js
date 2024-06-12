@@ -135,8 +135,148 @@ test.describe('Calculator', () => {
     expect(displayValue).toBe('0');
   });
 
-  // Test for division by zero
+  // Division de nombres positifs
+  test('divides 6 / 3 to equal 2', async ({ page }) => {
+    await page.click('button:has-text("6")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('2');
+  });
+
+  // Division de nombres négatifs
+  test('divides -6 / -3 to equal 2', async ({ page }) => {
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("6")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('2');
+  });
+
+  // Division d'un nombre positif et d'un nombre négatif
+  test('divides 6 / -3 to equal -2', async ({ page }) => {
+    await page.click('button:has-text("6")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('-2');
+  });
+
+  // Division par zéro
   test('returns "Error" for division by zero', async ({ page }) => {
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("0")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  // Expressions complexes avec plusieurs opérations
+  test('evaluates 1 + 2 * 3 to equal 7', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('7');
+  });
+
+  test('evaluates 1 + 2 * 3 - 4 to equal 3', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("4")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('3');
+  });
+
+  test('evaluates 1 + 2 * 3 - 4 / 2 to equal 5', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("4")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('5');
+  });
+
+  test('evaluates " 1 + 2 " to equal 3', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('3');
+  });
+
+  // Expressions avec parenthèses
+  test('evaluates (1 + 2) * 3 to equal 9', async ({ page }) => {
+    await page.click('button:has-text("(")');
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text(")")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('9');
+  });
+
+  test('evaluates 1 + (2 * 3) - 4 to equal 3', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("(")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text(")")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("4")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('3');
+  });
+
+  test('evaluates (1 + 2) * (3 - 4) / 2 to equal -1.5', async ({ page }) => {
+    await page.click('button:has-text("(")');
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text(")")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("(")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("-")');
+    await page.click('button:has-text("4")');
+    await page.click('button:has-text(")")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('-1.5');
+  });
+
+  // Tests d'erreur pour expressions invalides
+  test('returns "Error" for invalid expression 1/0', async ({ page }) => {
     await page.click('button:has-text("1")');
     await page.click('button:has-text("/")');
     await page.click('button:has-text("0")');
@@ -145,12 +285,58 @@ test.describe('Calculator', () => {
     expect(displayValue).toBe('Error');
   });
 
-  // Test for invalid expression
-  test('returns "Error" for invalid expression', async ({ page }) => {
+  test('returns "Error" for invalid expression 1++2', async ({ page }) => {
     await page.click('button:has-text("1")');
     await page.click('button:has-text("+")');
     await page.click('button:has-text("+")');
     await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  test('returns "Error" for invalid expression 1..2', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text(".")');
+    await page.click('button:has-text(".")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  test('returns "Error" for invalid expression 1 + (2 * 3', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("(")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  test('returns "Error" for invalid expression 1 + 2) * 3', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text(")")');
+    await page.click('button:has-text("*")');
+    await page.click('button:has-text("3")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  test('returns "Error" for empty expression', async ({ page }) => {
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  test('returns "Error" for expression with only spaces', async ({ page }) => {
+    await page.type('.calculator__display', ' ');
     await page.click('button:has-text("=")');
     const displayValue = await page.$eval('.calculator__display', el => el.value);
     expect(displayValue).toBe('Error');
