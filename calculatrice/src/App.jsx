@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import './styles/index.scss';
 
-const buttons = [
-  '1', '2', '3', '+',
-  '4', '5', '6', '-',
-  '7', '8', '9', '*',
-  'C', '0', '='
-];
+const buttons = ['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9', '*', '.', '0', 'C', '/', '='];
 
 const Button = ({ label, onClick }) => {
   return (
@@ -39,22 +34,22 @@ function App() {
   const [result, setResult] = useState('');
 
   const handleClick = (value) => {
-      if (value === '=') {
-        const result = calculate(display);
-        setResult(result);
-        setDisplay(result);
-      } else if (value === 'C') {
-        setResult('');
-        setDisplay('');
+    if (value === '=') {
+      const result = calculate(display);
+      setResult(result);
+      setDisplay(result);
+    } else if (value === 'C') {
+      setResult('');
+      setDisplay('');
+    } else {
+      // Handle subtraction operation correctly
+      if (value === '-' && display.endsWith('-')) {
+        setDisplay((prevDisplay) => prevDisplay.slice(0, -1) + '+');
       } else {
-        // Handle subtraction operation correctly
-        if (value === '-' && display.endsWith('-')) {
-          setDisplay((prevDisplay) => prevDisplay.slice(0, -1) + '+');
-        } else {
-          setDisplay((prevDisplay) => prevDisplay + value);
-        }
+        setDisplay((prevDisplay) => prevDisplay + value);
       }
-    };
+    }
+  };
 
   return (
     <div className="app">

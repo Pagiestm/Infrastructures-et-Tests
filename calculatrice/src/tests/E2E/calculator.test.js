@@ -134,4 +134,25 @@ test.describe('Calculator', () => {
     const displayValue = await page.$eval('.calculator__display', el => el.value);
     expect(displayValue).toBe('0');
   });
+
+  // Test for division by zero
+  test('returns "Error" for division by zero', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("/")');
+    await page.click('button:has-text("0")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
+
+  // Test for invalid expression
+  test('returns "Error" for invalid expression', async ({ page }) => {
+    await page.click('button:has-text("1")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("+")');
+    await page.click('button:has-text("2")');
+    await page.click('button:has-text("=")');
+    const displayValue = await page.$eval('.calculator__display', el => el.value);
+    expect(displayValue).toBe('Error');
+  });
 });

@@ -20,5 +20,5 @@ describe('calculate', () => {
     it('should return "Error" for invalid expressions', () => {
         expect(calculate('1/0')).toBe('Error');
         expect(calculate('1++2')).toBe('Error');
-      });
+    });
 });
